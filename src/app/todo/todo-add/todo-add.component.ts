@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { catchError, tap, map } from 'rxjs/operators';
+import { Todo } from '../../model/todo';
+import { TodoService } from '../../service/todo.service';
+
 
 @Component({
   selector: 'app-todo-add',
@@ -7,9 +11,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TodoAddComponent implements OnInit {
 
-  constructor() { }
+  title: string;
+  @Output() newTodo = new EventEmitter<Todo>();
+
+  constructor(private todoService: TodoService) { }
 
   ngOnInit() {
+  }
+
+  addTodo() {
+    this.todoService
+        .addTodo({ title: this.title, status: 'Pending'} as  Todo)
+        .subscribe(
+          (todo) => {
+            this.newTodo.emit(todo);
+          },
+          (error) => console.error(error)
+        );
+    this.title = '';
   }
 
 }

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Todo } from '../model/todo';
+import { TodosListComponent} from './todos-list/todos-list.component';
 
 @Component({
   selector: 'app-todo',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TodoComponent implements OnInit {
 
+  @ViewChild(TodosListComponent)
+  private list: TodosListComponent;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onNewTodo( todo: Todo){
+    this.list.getTodos();
   }
 
 }
