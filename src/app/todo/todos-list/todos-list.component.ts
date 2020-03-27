@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../../model/todo';
 import { TodoService } from '../../service/todo.service';
+import { Router } from '@angular/router';
+import { Location } from "@angular/common";
 
 @Component({
   selector: 'app-todos-list',
@@ -10,7 +12,31 @@ import { TodoService } from '../../service/todo.service';
 export class TodosListComponent implements OnInit {
 
   todos: Todo[];
-  constructor(private todoService: TodoService) { }
+
+  filters: any = {};
+
+  constructor(
+    private todoService: TodoService, 
+    private location: Location, 
+    private router: Router) {
+    router.events.subscribe(val => {
+      let status = location.path();
+      
+      switch (status) {
+        case '/active':
+          this.filters.status = 'pending';
+          break;
+        case '/completed':
+          this.filters.status = 'completed';
+          break;
+        default:
+          delete this.filters.status; 
+          break;
+      }
+      console.log(status, this.filters);
+      this.getTodos();
+    });
+  }
 
   ngOnInit() {
     this.getTodos();
@@ -18,8 +44,9 @@ export class TodosListComponent implements OnInit {
 
   getTodos() {
     this.todoService
-        .getTodos()
-        .subscribe(todos => this.todos = todos);
+      .getTodos(this.filters)
+      .subscribe(todos => this.todos = todos);
+
   }
 
 }

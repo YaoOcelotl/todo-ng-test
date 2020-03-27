@@ -19,8 +19,8 @@ export class TodoService {
     private http: HttpClient,
     ) { }
 
-  getTodos (): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.todosUrl);
+  getTodos (params: any = {}): Observable<Todo[]> {
+    return this.http.get<Todo[]>(this.todosUrl, { params: params });
   }
 
   addTodo(todo: Todo): Observable<Todo> {
