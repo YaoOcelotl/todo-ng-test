@@ -28,4 +28,8 @@ export class TodoService {
                .post<Todo>(this.todosUrl, todo, this.httpOptions);
   }
 
+  updateTodo(todo: Todo): Observable<any> {
+    return this.http.put(this.todosUrl, todo, this.httpOptions);
+  }
+
 }
