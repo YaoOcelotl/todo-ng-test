@@ -11,6 +11,8 @@ export class TodoItemComponent implements OnInit {
 
   @Input() todo: Todo;
 
+  editing = false;
+
   constructor(private todoService: TodoService) { }
 
   ngOnInit() {
@@ -29,10 +31,15 @@ export class TodoItemComponent implements OnInit {
     }
   }
 
+  switchEditing() {
+    this.editing = (this.todo.status !== 'Completed' && !this.editing);
+  }
+
   updateTodo() {
     this.todoService.updateTodo(this.todo).subscribe(
           _ => {
             console.log('saved', this.todo);
+            this.editing = false;
           },
           (error) => console.error(error)
         );
