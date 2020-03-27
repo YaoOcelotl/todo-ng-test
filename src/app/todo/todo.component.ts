@@ -17,7 +17,11 @@ export class TodoComponent implements OnInit {
   ngOnInit() {
   }
 
-  onNewTodo( todo: Todo){
+  onNewTodo( todo: Todo) {
+    this.list.getTodos();
+  }
+
+  onDeletedCompletedTodos() {
     this.list.getTodos();
   }
 
