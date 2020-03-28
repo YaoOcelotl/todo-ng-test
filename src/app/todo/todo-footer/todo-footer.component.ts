@@ -10,7 +10,7 @@ import { TodoService } from '../../service/todo.service';
 })
 export class TodoFooterComponent implements OnInit {
 
-   @Output() deletedCompletedTodos = new EventEmitter<void>();
+   @Output() deletedCompletedTodos = new EventEmitter<any>();
 
 
   todoStatus: string;
@@ -38,8 +38,8 @@ export class TodoFooterComponent implements OnInit {
 
   async deleteCompleted() {
     console.log('deleteCompleted');
-    await this.todoService.deleteCompleted();
-    this.deletedCompletedTodos.emit();
+    let result: any = await this.todoService.deleteCompleted();
+    this.deletedCompletedTodos.emit(result);
   }
 
 }

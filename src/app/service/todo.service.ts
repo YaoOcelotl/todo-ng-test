@@ -37,12 +37,21 @@ export class TodoService {
     return this.http.delete(`${this.todosUrl}/${todo.id}`);
   }
 
-  async deleteCompleted(): Promise<Todo[]> {
+  async deleteCompleted(): Promise<any> {
     let elements = await this.getTodos({ status: 'completed'}).toPromise();
+    let element: Todo = null;
+    let result = { successes: [], errors: []};
     for (let i = 0; i < elements.length; i++) {
-      await this.deleteTodo(elements[i]).toPromise();
+      try {
+        element = elements[i];
+        await this.deleteTodo(element).toPromise();
+        result.successes.push(element);
+      } catch (error) {
+        console.error(error);
+        result.errors.push(element);
+      }
     }
-    return elements;
+    return result;
   }
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Todo } from '../../model/todo';
 import { TodoService } from '../../service/todo.service';
+import {Message, MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-todo-item',
@@ -14,36 +15,38 @@ export class TodoItemComponent implements OnInit {
 
   editing = false;
 
-  constructor(private todoService: TodoService) { }
+  constructor(private todoService: TodoService, private messageService: MessageService) { }
 
   ngOnInit() {
   }
 
-  switchCompleted() {
-    switch(this.todo.status) {
+  async switchCompleted() {
+    switch (this.todo.status) {
       case 'Completed':
         this.todo.status = 'Pending';
-        this.updateTodo();
+         await this.updateTodo(false);
         break;
       default:
         this.todo.status = 'Completed';
-        this.updateTodo();
+        await this.updateTodo(false);
         break;
     }
+    this.messageService.add({ severity: 'success', summary: `ToDo ${this.todo.status}`, detail: this.todo.title } as Message);
   }
 
   switchEditing() {
     this.editing = (this.todo.status !== 'Completed' && !this.editing);
   }
 
-  updateTodo() {
-    this.todoService.updateTodo(this.todo).subscribe(
-          _ => {
-            console.log('saved', this.todo);
-            this.editing = false;
-          },
-          (error) => console.error(error)
-        );
+  async updateTodo(sendMessage = true) {
+    try {
+      await this.todoService.updateTodo(this.todo).toPromise();
+      if (sendMessage) {
+         this.messageService.add({ severity: 'success', summary: 'ToDo updated', detail: this.todo.title } as Message);
+      }
+    } catch ( error) {
+      this.messageService.add({ severity: 'error', summary: 'Updated error ', detail: error } as Message);
+    }
   }
 
   async deleteTodo() {
