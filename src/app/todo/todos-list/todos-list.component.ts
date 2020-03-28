@@ -30,7 +30,7 @@ export class TodosListComponent implements OnInit {
           this.filters.status = 'completed';
           break;
         default:
-          delete this.filters.status; 
+          delete this.filters.status;
           break;
       }
       console.log(status, this.filters);
@@ -47,6 +47,14 @@ export class TodosListComponent implements OnInit {
       .getTodos(this.filters)
       .subscribe(todos => this.todos = todos);
 
+  }
+
+  async onDeletedTodo(todo: Todo) {
+    this.todos = this.todos.filter( element => element.id !== todo.id );
+  }
+
+  async onNewTodo(todo: Todo) {
+    this.todos.push(todo);
   }
 
 }

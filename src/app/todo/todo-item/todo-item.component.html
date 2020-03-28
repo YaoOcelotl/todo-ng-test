@@ -3,7 +3,7 @@
   <div class="view">
     <input class="toggle" type="checkbox" [checked]="todo.status=='Completed'? true :  null" on-change="switchCompleted()">
     <label (click)="switchEditing()">{{todo.title}}</label>
-    <button class="destroy"></button>
+    <button class="destroy" (click)="deleteTodo()"></button>
   </div>
   <input class="edit" [(ngModel)]="todo.title" (change)="updateTodo()" (keyup.enter)="editing=false">
 </li>

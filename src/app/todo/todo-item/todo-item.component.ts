@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Todo } from '../../model/todo';
 import { TodoService } from '../../service/todo.service';
 
@@ -10,6 +10,7 @@ import { TodoService } from '../../service/todo.service';
 export class TodoItemComponent implements OnInit {
 
   @Input() todo: Todo;
+  @Output() deletedTodo = new EventEmitter<Todo>();
 
   editing = false;
 
@@ -43,6 +44,18 @@ export class TodoItemComponent implements OnInit {
           },
           (error) => console.error(error)
         );
+  }
+
+  async deleteTodo() {
+    try {
+      await this.todoService.deleteTodo(this.todo).toPromise();
+      this.deletedTodo.emit(this.todo);
+    } catch ( e ) {
+      console.error(e);
+      throw e;
+    } finally {
+
+    }
   }
 
 }

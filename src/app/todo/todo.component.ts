@@ -18,7 +18,7 @@ export class TodoComponent implements OnInit {
   }
 
   onNewTodo( todo: Todo) {
-    this.list.getTodos();
+    this.list.onNewTodo(todo);
   }
 
   onDeletedCompletedTodos() {
