@@ -22,12 +22,12 @@ export class TodoItemComponent implements OnInit {
 
   async switchCompleted() {
     switch (this.todo.status) {
-      case 'Completed':
-        this.todo.status = 'Pending';
+      case Todo.STATUS_COMPLETED:
+        this.todo.status = Todo.STATUS_PENDING;
          await this.updateTodo(false);
         break;
       default:
-        this.todo.status = 'Completed';
+        this.todo.status = Todo.STATUS_COMPLETED;
         await this.updateTodo(false);
         break;
     }
@@ -35,7 +35,7 @@ export class TodoItemComponent implements OnInit {
   }
 
   switchEditing() {
-    this.editing = (this.todo.status !== 'Completed' && !this.editing);
+    this.editing = (this.todo.status !== Todo.STATUS_COMPLETED && !this.editing);
   }
 
   async updateTodo(sendMessage = true) {

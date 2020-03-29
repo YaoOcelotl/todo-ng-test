@@ -23,7 +23,7 @@ export class TodoAddComponent implements OnInit {
   async addTodo() {
     try {
       this.inputBlocked = true;
-      await this.todoService .addTodo({ title: this.title, status: 'Pending'} as  Todo);
+      await this.todoService .addTodo({ title: this.title, status: Todo.STATUS_PENDING } as  Todo);
     } catch (error) {
       console.error(error);
     } finally {

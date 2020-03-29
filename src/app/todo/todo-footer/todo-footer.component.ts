@@ -1,6 +1,4 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { Location } from "@angular/common";
 import { TodoService } from '../../service/todo.service';
 
 @Component({
@@ -12,24 +10,8 @@ export class TodoFooterComponent implements OnInit {
 
    @Output() deletedCompletedTodos = new EventEmitter<any>();
 
-
-  todoStatus: string;
-
-  constructor( location: Location, private router: Router, private todoService: TodoService) {
-    router.events.subscribe(val => {
-      let status = location.path();
-      switch (status) {
-        case '/active':
-          this.todoStatus = 'pending';
-          break;
-        case '/completed':
-          this.todoStatus = 'completed';
-          break;
-        default:
-          this.todoStatus = undefined;
-          break;
-      }
-    });
+  constructor(private todoService: TodoService) {
+    
   }
 
   ngOnInit() {

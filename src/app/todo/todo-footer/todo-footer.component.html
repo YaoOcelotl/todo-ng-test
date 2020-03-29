@@ -5,13 +5,13 @@
   <!-- Remove this if you don't implement routing -->
   <ul class="filters">
     <li>
-      <a class="{{ !todoStatus ? 'selected' : null }}" routerLink="/" >Todo</a>
+      <a routerLinkActive="selected" [routerLinkActiveOptions]="{exact:true}" routerLink="/" >Todo</a>
     </li>
     <li>
-      <a class="{{ todoStatus == 'pending' ? 'selected' : null }}" routerLink="/active">Pending</a>
+      <a routerLinkActive="selected" routerLink="/active">Pending</a>
     </li>
     <li>
-      <a class="{{ todoStatus == 'completed' ? 'selected' : null }}" routerLink="/completed">Completed</a>
+      <a routerLinkActive="selected" routerLink="/completed">Completed</a>
     </li>
   </ul>
   <!-- Hidden if no completed items are left ↓ -->

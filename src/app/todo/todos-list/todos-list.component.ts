@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../../model/todo';
 import { TodoService } from '../../service/todo.service';
-import { Router } from '@angular/router';
-import { Location } from "@angular/common";
+import { Router, ActivationEnd } from '@angular/router';
 import {Message, MessageService} from 'primeng/api';
 
 @Component({
@@ -18,35 +17,24 @@ export class TodosListComponent implements OnInit {
 
   constructor(
     private todoService: TodoService,
-    private location: Location,
     private router: Router,
     private messageService: MessageService) {
 
-    //Acualizar listado despues de crear un todo
+    // Acualizar listado despues de crear un todo
     todoService.postCreateTodoEmmitter.subscribe(
       (todo: Todo) => this.onNewTodo(todo)
     );
-    //Actualizar filtros en base a la ruta
-    router.events.subscribe(val => {
-      let status = location.path();
-      switch (status) {
-        case '/active':
-          this.filters.status = 'pending';
-          break;
-        case '/completed':
-          this.filters.status = 'completed';
-          break;
-        default:
-          delete this.filters.status;
-          break;
+    // Actualizar filtros en base a la ruta
+    router.events.subscribe(routerEvent => {
+      if (routerEvent instanceof ActivationEnd) {
+        this.filters = routerEvent.snapshot.data['filters'];
+        this.getTodos();
       }
-      console.log(status, this.filters);
-      this.getTodos();
     });
   }
 
   ngOnInit() {
-    this.getTodos();
+
   }
 
   async getTodos() {
