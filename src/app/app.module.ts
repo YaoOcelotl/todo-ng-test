@@ -18,6 +18,10 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { BlockUIModule } from 'primeng/blockui';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { UiDivComponent } from './component/ui/ui-div/ui-div.component';
+import { TodoToggleAllComponent } from './todo/todo-toggle-all/todo-toggle-all.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,9 @@ import { MessageService } from 'primeng/api';
     TodosListComponent,
     TodoItemComponent,
     TodoFooterComponent,
-    TodoAddComponent
+    TodoAddComponent,
+    UiDivComponent,
+    TodoToggleAllComponent
   ],
   imports: [
     BrowserModule,
@@ -40,8 +46,10 @@ import { MessageService } from 'primeng/api';
     MessagesModule,
     MessageModule,
     ToastModule,
+    BlockUIModule,
+    ProgressSpinnerModule,
   ],
   providers: [ MessageService ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

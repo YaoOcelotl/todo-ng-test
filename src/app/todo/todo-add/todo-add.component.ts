@@ -12,23 +12,24 @@ import { TodoService } from '../../service/todo.service';
 export class TodoAddComponent implements OnInit {
 
   title: string;
-  @Output() newTodo = new EventEmitter<Todo>();
+
+  inputBlocked = false;
 
   constructor(private todoService: TodoService) { }
 
   ngOnInit() {
   }
 
-  addTodo() {
-    this.todoService
-        .addTodo({ title: this.title, status: 'Pending'} as  Todo)
-        .subscribe(
-          (todo) => {
-            this.newTodo.emit(todo);
-          },
-          (error) => console.error(error)
-        );
-    this.title = '';
+  async addTodo() {
+    try {
+      this.inputBlocked = true;
+      await this.todoService .addTodo({ title: this.title, status: 'Pending'} as  Todo);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.title = '';
+      this.inputBlocked = false;
+    }
   }
 
 }

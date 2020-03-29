@@ -1,11 +1,12 @@
 <section class="todoapp">
-  <app-todo-add (newTodo)="onNewTodo($event)" ></app-todo-add>
-  
+  <header class="header">
+    <h1>TODO</h1>
+    <div class="toolbox p-grid p-justify-start p-align-center">
+      <app-todo-toggle-all></app-todo-toggle-all>
+      <app-todo-add></app-todo-add>
+    </div>
+  </header>
   <section class="main">
-
-    <input id="toggle-all" class="toggle-all" type="checkbox">
-    <label for="toggle-all">Mark all as complete</label>
-    
     <app-todos-list></app-todos-list>
   </section>
   

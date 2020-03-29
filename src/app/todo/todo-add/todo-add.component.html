@@ -1,8 +1,11 @@
-<header class="header">
-    <h1>TODO</h1>
-    <input  class="new-todo" 
-            placeholder="Enter the task" 
-            autofocus
-            [(ngModel)]="title"
-            (keyup.enter)="addTodo()"> 
-  </header>
+<p-blockUI [blocked]="inputBlocked" [target]="new_todo_input">
+  <p-progressSpinner [style]="{width: '55px', height: '55px'}" strokeWidth="4" class="p-grid p-justify-center p-align-center" ></p-progressSpinner>
+</p-blockUI>
+<app-ui-div #new_todo_input >
+  <input class="new-todo"
+         type="text"
+         placeholder="Enter the task" 
+         autofocus
+         [(ngModel)]="title"
+         (keyup.enter)="addTodo()">
+</app-ui-div>

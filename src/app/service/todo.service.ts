@@ -2,8 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Todo } from '../model/todo';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class TodoService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+  preCreateTodoEmmitter: EventEmitter<Todo> = new EventEmitter();
+
+  postCreateTodoEmmitter: EventEmitter<Todo> = new EventEmitter();
+
   constructor(
     private http: HttpClient,
     ) { }
@@ -24,9 +29,17 @@ export class TodoService {
     return this.http.get<Todo[]>(this.todosUrl, { params: params });
   }
 
-  addTodo(todo: Todo): Observable<Todo> {
-    return this.http
-               .post<Todo>(this.todosUrl, todo, this.httpOptions);
+  async addTodo(todo: Todo): Promise<Todo> {
+    this.preCreateTodoEmmitter.emit(todo);
+    try {
+      let persisted: Todo = await this.http.post<Todo>(this.todosUrl, todo, this.httpOptions).toPromise();
+      this.postCreateTodoEmmitter.emit(persisted);
+      return persisted;
+    } catch (error) {
+      let errorEvent = { todo: todo, error: error};
+      this.postCreateTodoEmmitter.error(errorEvent);
+      throw errorEvent;
+    }
   }
 
   updateTodo(todo: Todo): Observable<any> {

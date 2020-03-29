@@ -21,9 +21,14 @@ export class TodosListComponent implements OnInit {
     private location: Location,
     private router: Router,
     private messageService: MessageService) {
+
+    //Acualizar listado despues de crear un todo
+    todoService.postCreateTodoEmmitter.subscribe(
+      (todo: Todo) => this.onNewTodo(todo)
+    );
+    //Actualizar filtros en base a la ruta
     router.events.subscribe(val => {
       let status = location.path();
-      
       switch (status) {
         case '/active':
           this.filters.status = 'pending';

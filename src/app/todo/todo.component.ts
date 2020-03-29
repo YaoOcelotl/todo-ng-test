@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Todo } from '../model/todo';
 import { TodosListComponent} from './todos-list/todos-list.component';
 import {Message, MessageService} from 'primeng/api';
@@ -6,7 +6,8 @@ import {Message, MessageService} from 'primeng/api';
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
-  styles: []
+  styleUrls: [ './todo.component.scss' ],
+  encapsulation: ViewEncapsulation.None
 })
 export class TodoComponent implements OnInit {
 
@@ -16,10 +17,6 @@ export class TodoComponent implements OnInit {
   constructor(private messageService: MessageService) { }
 
   ngOnInit() {
-  }
-
-  onNewTodo( todo: Todo) {
-    this.list.onNewTodo(todo);
   }
 
   async onDeletedCompletedTodos(result: any) {
