@@ -1,41 +1,5 @@
 app-todo {
   .todoapp {
-    .header {
-      .toolbox {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        align-items: stretch;
-        align-content: stretch;
-
-        app-todo-toggle-all {
-          flex-grow: 0;
-          flex-shrink: 1;
-          flex-basis: 60px;
-          display: flex;
-          flex-direction: row;
-          flex-wrap: nowrap;
-          justify-content: center;
-          align-items: center;
-          align-content: center;
-          
-          .toggle-all  + label {
-            position: static;
-          }
-        }
-
-        app-todo-add {
-          flex-grow: 1;
-          flex-shrink: 0;
-          flex-basis: auto;
-
-          .new-todo {
-            padding: 16px;
-          }
-        }
-      }
-    }
     .footer {
       .filters {
         li {

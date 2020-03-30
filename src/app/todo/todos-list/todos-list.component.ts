@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { Todo } from '../../model/todo';
 import { TodoService } from '../../service/todo.service';
 import { Router, ActivationEnd } from '@angular/router';
-import {Message, MessageService} from 'primeng/api';
+import { Message, MessageService } from 'primeng/api';
+import { TodoToggleAllComponent } from '../todo-toggle-all/todo-toggle-all.component';
 
 @Component({
   selector: 'app-todos-list',
@@ -16,6 +17,9 @@ export class TodosListComponent implements OnInit {
   inputBlocked = false;
 
   filters: any = {};
+
+  @ViewChild(TodoToggleAllComponent)
+  todoToggleAllComponent: TodoToggleAllComponent;
 
   constructor(
     private todoService: TodoService,
@@ -73,19 +77,23 @@ export class TodosListComponent implements OnInit {
       this.todos = [];
     } finally {
       this.inputBlocked = false;
+      this.todoToggleAllComponent.setSelected(this.todos);
     }
   }
 
   async onDeletedTodo(todo: Todo) {
     this.todos = this.todos.filter( element => element.id !== todo.id );
     this.messageService.add({ severity: 'success', summary: 'ToDo deleted', detail: todo.title } as Message);
+    this.todoToggleAllComponent.setSelected(this.todos);
   }
 
   async onNewTodo(todo: Todo) {
     if ( this.filters.status === undefined || this.filters.status !== Todo.STATUS_COMPLETED ) {
       this.todos.push(todo);
+      this.todoToggleAllComponent.setSelected(this.todos);
     }
     this.messageService.add({ severity: 'success', summary: 'ToDo created', detail: todo.title } as Message);
+    
   }
 
   async onUpdateTodo(todo: Todo) {
@@ -93,6 +101,30 @@ export class TodosListComponent implements OnInit {
     if (status !== undefined && status !== todo.status) {
       this.todos = this.todos.filter( element => element.id !== todo.id );
     }
+
+    if (!this.inputBlocked) {
+      this.todoToggleAllComponent.setSelected(this.todos);
+    }
+    
+  }
+
+  async onToggleAll(status: string) {
+    this.inputBlocked = true;
+    let todos: Todo[] = this.todos;
+    let todo: Todo = null;
+    for (let i = 0; i < todos.length; i++) {
+      todo = todos[i];
+      if (todo.status !== status) {
+        todo.status = status;
+        try {
+          await this.todoService.updateTodo(todo);
+          this.todoService.switchStatusEmmitter.emit(todo);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+    this.inputBlocked = false;
   }
 
 }

@@ -1,2 +1,2 @@
-<input id="toggle-all" class="toggle-all toggle" type="checkbox">
-<label for="toggle-all">Mark all as complete</label>
+<input id="toggle-all" class="toggle-all toggle" type="checkbox" [(ngModel)]="selected" (change)="markAllTodos($event)">
+<label for="toggle-all" >Mark all as {{ !selected ? 'completed' : 'pending' }}</label>
