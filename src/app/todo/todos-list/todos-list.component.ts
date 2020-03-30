@@ -12,7 +12,7 @@ import { TodoToggleAllComponent } from '../todo-toggle-all/todo-toggle-all.compo
 })
 export class TodosListComponent implements OnInit {
 
-  todos: Todo[];
+  todos: Todo[] = [];
 
   inputBlocked = false;
 
