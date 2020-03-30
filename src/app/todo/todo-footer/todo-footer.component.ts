@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../../service/todo.service';
 
 @Component({
@@ -8,10 +8,8 @@ import { TodoService } from '../../service/todo.service';
 })
 export class TodoFooterComponent implements OnInit {
 
-   @Output() deletedCompletedTodos = new EventEmitter<any>();
-
   constructor(private todoService: TodoService) {
-    
+
   }
 
   ngOnInit() {
@@ -20,8 +18,7 @@ export class TodoFooterComponent implements OnInit {
 
   async deleteCompleted() {
     console.log('deleteCompleted');
-    let result: any = await this.todoService.deleteCompleted();
-    this.deletedCompletedTodos.emit(result);
+    await this.todoService.deleteCompleted();
   }
 
 }

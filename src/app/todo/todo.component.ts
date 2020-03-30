@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Todo } from '../model/todo';
 import { TodosListComponent} from './todos-list/todos-list.component';
+import { TodoService } from '../service/todo.service';
 import {Message, MessageService} from 'primeng/api';
+import { DeleteCompletedResult } from '../model/util/delete-completed-result';
 
 @Component({
   selector: 'app-todo',
@@ -14,12 +16,17 @@ export class TodoComponent implements OnInit {
   @ViewChild(TodosListComponent)
   private list: TodosListComponent;
 
-  constructor(private messageService: MessageService) { }
+  constructor(private todoService: TodoService, private messageService: MessageService) {
+    //Se liga el evento de completado de eliminación de todos completados
+    todoService.postDeleteCompletedEmmitter.subscribe(
+      (result: DeleteCompletedResult) => this.onDeletedCompletedTodos(result)
+    );
+  }
 
   ngOnInit() {
   }
 
-  async onDeletedCompletedTodos(result: any) {
+  async onDeletedCompletedTodos(result: DeleteCompletedResult) {
     await this.list.getTodos();
 
     if (result.successes.length > 0) {

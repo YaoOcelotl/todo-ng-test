@@ -1,9 +1,14 @@
 <!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
 <li *ngIf="todo"  class="{{todo.status| lowercase}} {{ editing ? 'editing' : null}}" >
-  <div class="view">
-    <input class="toggle" type="checkbox" [checked]="todo.status=='Completed'? true :  null" on-change="switchCompleted()">
-    <label (click)="switchEditing()">{{todo.title}}</label>
-    <button class="destroy" (click)="deleteTodo()"></button>
-  </div>
-  <input class="edit" [(ngModel)]="todo.title" (change)="updateTodo()" (keyup.enter)="editing=false">
+  <p-blockUI [blocked]="inputBlocked" [target]="todo_input">
+    <p-progressSpinner [style]="{width: '55px', height: '55px'}" strokeWidth="4" class="p-grid p-justify-center p-align-center" ></p-progressSpinner>
+  </p-blockUI>
+  <app-ui-div #todo_input >
+    <div class="view">
+      <input class="toggle" type="checkbox" [checked]="todo.status=='Completed'? true :  null" on-change="switchCompleted()">
+      <label (dblclick)="switchEditing()">{{todo.title}}</label>
+      <button class="destroy" (click)="deleteTodo()"></button>
+    </div>
+    <input #editInput class="edit" [(ngModel)]="todo.title" (change)="updateTodo()" (keyup.enter)="editing=false" (blur)="editing=false">
+  </app-ui-div>
 </li>

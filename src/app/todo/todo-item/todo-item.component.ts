@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { Todo } from '../../model/todo';
 import { TodoService } from '../../service/todo.service';
-import {Message, MessageService} from 'primeng/api';
+import { Message, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-todo-item',
@@ -11,9 +11,12 @@ import {Message, MessageService} from 'primeng/api';
 export class TodoItemComponent implements OnInit {
 
   @Input() todo: Todo;
-  @Output() deletedTodo = new EventEmitter<Todo>();
+
+  @ViewChild('editInput') input: ElementRef;
 
   editing = false;
+
+  inputBlocked = false;
 
   constructor(private todoService: TodoService, private messageService: MessageService) { }
 
@@ -35,29 +38,35 @@ export class TodoItemComponent implements OnInit {
   }
 
   switchEditing() {
-    this.editing = (this.todo.status !== Todo.STATUS_COMPLETED && !this.editing);
+    if ( ( this.editing = (this.todo.status !== Todo.STATUS_COMPLETED && !this.editing) ) ) {
+      setTimeout(() => this.input.nativeElement.focus(), 0);
+    }
+
   }
 
   async updateTodo(sendMessage = true) {
     try {
-      await this.todoService.updateTodo(this.todo).toPromise();
+      this.inputBlocked = true;
+      await this.todoService.updateTodo(this.todo);
       if (sendMessage) {
          this.messageService.add({ severity: 'success', summary: 'ToDo updated', detail: this.todo.title } as Message);
       }
     } catch ( error) {
       this.messageService.add({ severity: 'error', summary: 'Updated error ', detail: error } as Message);
     }
+    finally {
+      this.inputBlocked = false;
+    }
   }
 
   async deleteTodo() {
     try {
-      await this.todoService.deleteTodo(this.todo).toPromise();
-      this.deletedTodo.emit(this.todo);
+      this.inputBlocked = true;
+      await this.todoService.deleteTodo(this.todo);
     } catch ( e ) {
       console.error(e);
-      throw e;
     } finally {
-
+      this.inputBlocked = false;
     }
   }
 

@@ -4,6 +4,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { Todo } from '../model/todo';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
+import { DeleteCompletedResult } from '../model/util/delete-completed-result';
 
 
 @Injectable({
@@ -21,12 +22,24 @@ export class TodoService {
 
   postCreateTodoEmmitter: EventEmitter<Todo> = new EventEmitter();
 
+  preUpdateTodoEmmitter: EventEmitter<Todo> = new EventEmitter();
+
+  postUpdateTodoEmmitter: EventEmitter<Todo> = new EventEmitter();
+
+  preDeleteTodoEmmitter: EventEmitter<Todo> = new EventEmitter();
+
+  postDeleteTodoEmmitter: EventEmitter<Todo> = new EventEmitter();
+
+  preDeleteCompletedEmmitter: EventEmitter<void> = new EventEmitter();
+
+  postDeleteCompletedEmmitter: EventEmitter<DeleteCompletedResult> = new EventEmitter();
+
   constructor(
     private http: HttpClient,
     ) { }
 
-  getTodos (params: any = {}): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.todosUrl, { params: params });
+  async getTodos (params: any = {}): Promise<Todo[]> {
+    return this.http.get<Todo[]>(this.todosUrl, { params: params }).toPromise();
   }
 
   async addTodo(todo: Todo): Promise<Todo> {
@@ -42,29 +55,52 @@ export class TodoService {
     }
   }
 
-  updateTodo(todo: Todo): Observable<any> {
-    return this.http.put(this.todosUrl, todo, this.httpOptions);
-  }
-
-  deleteTodo(todo: Todo): Observable<any> {
-    return this.http.delete(`${this.todosUrl}/${todo.id}`);
-  }
-
-  async deleteCompleted(): Promise<any> {
-    let elements = await this.getTodos({ status: 'completed'}).toPromise();
-    let element: Todo = null;
-    let result = { successes: [], errors: []};
-    for (let i = 0; i < elements.length; i++) {
-      try {
-        element = elements[i];
-        await this.deleteTodo(element).toPromise();
-        result.successes.push(element);
-      } catch (error) {
-        console.error(error);
-        result.errors.push(element);
-      }
+  async updateTodo(todo: Todo) {
+    this.preUpdateTodoEmmitter.emit(todo);
+    try {
+      await this.http.put(this.todosUrl, todo, this.httpOptions).toPromise();
+      this.postUpdateTodoEmmitter.emit(todo);
+    } catch (error) {
+      let errorEvent = { todo: todo, error: error};
+      this.postUpdateTodoEmmitter.error(errorEvent);
+      throw errorEvent;
     }
-    return result;
+  }
+
+  async deleteTodo(todo: Todo) {
+    this.preDeleteTodoEmmitter.emit(todo);
+    try {
+      await this.http.delete(`${this.todosUrl}/${todo.id}`).toPromise();
+      this.postDeleteTodoEmmitter.emit(todo);
+    } catch (error) {
+      let errorEvent = { todo: todo, error: error};
+      this.postDeleteTodoEmmitter.error(errorEvent);
+      throw errorEvent;
+    }
+  }
+
+  async deleteCompleted(): Promise<DeleteCompletedResult> {
+    this.preDeleteCompletedEmmitter.emit();
+    try {
+      let elements = await this.getTodos({ status: Todo.STATUS_COMPLETED});
+      let element: Todo = null;
+      let result: DeleteCompletedResult = { successes: [], errors: []};
+      for (let i = 0; i < elements.length; i++) {
+        try {
+          element = elements[i];
+          await this.deleteTodo(element);
+          result.successes.push(element);
+        } catch (error) {
+          console.error(error);
+          result.errors.push(element);
+        }
+      }
+      this.postDeleteCompletedEmmitter.emit(result);
+      return result;
+    } catch (error) {
+      this.postDeleteCompletedEmmitter.error(error);
+      throw error;
+    }
   }
 
 }
