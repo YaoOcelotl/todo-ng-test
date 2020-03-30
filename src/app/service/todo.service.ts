@@ -33,6 +33,8 @@ export class TodoService {
   preDeleteCompletedEmmitter: EventEmitter<void> = new EventEmitter();
 
   postDeleteCompletedEmmitter: EventEmitter<DeleteCompletedResult> = new EventEmitter();
+  
+  switchStatusEmmitter: EventEmitter<Todo> = new EventEmitter();
 
   constructor(
     private http: HttpClient,
@@ -40,6 +42,11 @@ export class TodoService {
 
   async getTodos (params: any = {}): Promise<Todo[]> {
     return this.http.get<Todo[]>(this.todosUrl, { params: params }).toPromise();
+  }
+
+  async getCountTodos (params: any = {}): Promise<number> {
+    let todos: Todo[] = await this.http.get<Todo[]>(this.todosUrl, { params: params }).toPromise();
+    return todos.length;
   }
 
   async addTodo(todo: Todo): Promise<Todo> {
@@ -82,9 +89,9 @@ export class TodoService {
   async deleteCompleted(): Promise<DeleteCompletedResult> {
     this.preDeleteCompletedEmmitter.emit();
     try {
-      let elements = await this.getTodos({ status: Todo.STATUS_COMPLETED});
+      let elements: Todo[] = await this.getTodos({ status: Todo.STATUS_COMPLETED});
       let element: Todo = null;
-      let result: DeleteCompletedResult = { successes: [], errors: []};
+      let result: DeleteCompletedResult = new DeleteCompletedResult();
       for (let i = 0; i < elements.length; i++) {
         try {
           element = elements[i];

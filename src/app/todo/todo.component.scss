@@ -36,5 +36,18 @@ app-todo {
         }
       }
     }
+    .footer {
+      .filters {
+        li {
+          a {
+            &.disabled{
+              pointer-events: none;
+              cursor: default;
+              color: lighten($color: #777, $amount: 25)
+            }
+          }
+        }
+      }
+    }
   }
 }

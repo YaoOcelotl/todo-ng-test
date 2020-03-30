@@ -34,6 +34,7 @@ export class TodoItemComponent implements OnInit {
         await this.updateTodo(false);
         break;
     }
+    this.todoService.switchStatusEmmitter.emit(this.todo);
     this.messageService.add({ severity: 'success', summary: `ToDo ${this.todo.status}`, detail: this.todo.title } as Message);
   }
 
