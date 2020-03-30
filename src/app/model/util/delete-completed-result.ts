@@ -2,8 +2,8 @@ import { Todo } from '../todo'
 
 export class DeleteCompletedResult {
 
-  successes: Todo[];
+  successes: Todo[] = [];
 
-  errors: Todo[];
+  errors: Todo[] = [];
 
 }

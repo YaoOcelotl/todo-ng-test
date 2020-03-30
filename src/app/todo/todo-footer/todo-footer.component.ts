@@ -40,7 +40,6 @@ export class TodoFooterComponent implements OnInit {
   }
 
   async deleteCompleted() {
-    console.log('deleteCompleted');
     await this.todoService.deleteCompleted();
   }
 
