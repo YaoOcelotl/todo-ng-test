@@ -4,3 +4,13 @@
   overflow: hidden;
   height: auto;
 }
+
+p-progressspinner {
+  &.p-grid {
+    .ui-progress-spinner {
+      margin-right: 0.5em;
+      margin-left: 0.5em;
+      margin-top: 0.5em;
+    }
+  }
+}
