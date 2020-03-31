@@ -1,0 +1,84 @@
+{
+  "app": {
+    "add": {
+      "new_todo": {
+        "placeholder": "Enter the task"
+      }
+    },
+    "footer": {
+      "delete_completed": "Delete completed",
+      "items_left": {
+        "plural": "items left",
+        "singular": "item left"
+      },
+      "link": {
+        "all": "All",
+        "completed": "Completed",
+        "pending": "Pending"
+      }
+    },
+    "list": {
+      "mark_all_as": "Mark all as",
+      "todo": {
+        "operation": {
+          "create": {
+            "sumary": {
+              "error": "Item create error",
+              "success": "Item created"
+            }
+          },
+          "delete": {
+            "sumary": {
+              "error": "Item delete error",
+              "success": "Item deleted"
+            }
+          },
+          "delete_completed": {
+            "detail": {
+              "error": "{count} { count, plural, one{error} other{errors}}",
+              "success": "Deleted {count} { count, plural, one{item} other{items}}"
+            },
+            "sumary": {
+              "error": "Completed items delete error",
+              "success": "Completed items deleted"
+            }
+          },
+          "switch_status": {
+            "completed": {
+              "sumary": {
+                "error": "Item update error",
+                "success": "Item was complete"
+              }
+            },
+            "pending": {
+              "sumary": {
+                "error": "Item update error",
+                "success": "Item is pending"
+              }
+            }
+          },
+          "update": {
+            "sumary": {
+              "error": "Item update error",
+              "success": "Item updated"
+            }
+          }
+        },
+        "status": {
+          "completed": "completed",
+          "pending": "pending"
+        }
+      }
+    },
+    "title": "TODO"
+  },
+  "footer": {
+    "created_by": "Created by",
+    "instructions": "Double-click to edit a todo",
+    "part_of": "Part of"
+  },
+  "locale": {
+    "english": "English",
+    "spanish": "Spanish"
+  }
+}

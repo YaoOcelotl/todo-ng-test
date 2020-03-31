@@ -4,6 +4,7 @@ import { TodoService } from '../../service/todo.service';
 import { Router, ActivationEnd } from '@angular/router';
 import { Message, MessageService } from 'primeng/api';
 import { TodoToggleAllComponent } from '../todo-toggle-all/todo-toggle-all.component';
+import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 
 @Component({
   selector: 'app-todos-list',
@@ -39,14 +40,14 @@ export class TodosListComponent implements OnInit {
       (todo: Todo) => this.onUpdateTodo(todo),
       (todo: Todo) => this.getTodos(),
     );
-    // Bloqueo del listado durante la eliminación de todos completados
+    // Bloqueo del listado durante la eliminaciÃ³n de todos completados
     todoService.preDeleteCompletedEmmitter.subscribe(
       () => {
         let status = this.filters.status;
         this.inputBlocked = ( status === undefined || status === Todo.STATUS_COMPLETED);
       }
     );
-    // Desbloqueo del listado despues la eliminación de todos completados
+    // Desbloqueo del listado despues la eliminaciÃ³n de todos completados
     todoService.postDeleteCompletedEmmitter.subscribe(
       () => {
         this.inputBlocked = false;
@@ -83,7 +84,10 @@ export class TodosListComponent implements OnInit {
 
   async onDeletedTodo(todo: Todo) {
     this.todos = this.todos.filter( element => element.id !== todo.id );
-    this.messageService.add({ severity: 'success', summary: 'ToDo deleted', detail: todo.title } as Message);
+    this.messageService.add({
+      severity: 'success',
+      summary: _('app.list.todo.operation.delete.sumary.success'),
+      detail: todo.title } as Message);
     this.todoToggleAllComponent.setSelected(this.todos);
   }
 
@@ -92,8 +96,11 @@ export class TodosListComponent implements OnInit {
       this.todos.push(todo);
       this.todoToggleAllComponent.setSelected(this.todos);
     }
-    this.messageService.add({ severity: 'success', summary: 'ToDo created', detail: todo.title } as Message);
-    
+    this.messageService.add({
+      severity: 'success',
+      summary: _('app.list.todo.operation.create.sumary.success'),
+      detail: todo.title } as Message);
+
   }
 
   async onUpdateTodo(todo: Todo) {

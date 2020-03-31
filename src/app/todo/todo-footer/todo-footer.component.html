@@ -1,26 +1,24 @@
 <footer [hidden]="!pending && !completed" class="footer">
   <span class="todo-count" [ngPlural]="pending">
-    <ng-template ngPluralCase="=0">
-      no pending tasks
-    </ng-template>
     <ng-template ngPluralCase="=1">
-      <strong>{{pending}}</strong> pending task
+      <strong>{{pending}}</strong> {{ "app.footer.items_left.singular"|translate }}
     </ng-template>
     <ng-template ngPluralCase="other">
-      <strong>{{pending}}</strong> pending tasks
+      <strong>{{pending}}</strong> {{ "app.footer.items_left.plural"|translate }}
     </ng-template>
-
   </span>
   <ul class="filters">
     <li>
-      <a routerLinkActive="selected" [routerLinkActiveOptions]="{exact:true}" routerLink="/" >Todo</a>
+      <a routerLinkActive="selected" [routerLinkActiveOptions]="{exact:true}" routerLink="/" >{{ "app.footer.link.all"|translate }}</a>
     </li>
     <li>
-      <a routerLinkActive="selected" routerLink="/active" [class.disabled]="pending <= 0 ? true: null">Pending</a>
+      <a routerLinkActive="selected" routerLink="/active" [class.disabled]="pending <= 0 ? true: null">{{ "app.footer.link.pending"|translate }}</a>
     </li>
     <li>
-      <a routerLinkActive="selected" routerLink="/completed" [class.disabled]="completed <= 0 ? true: null">Completed</a>
+      <a routerLinkActive="selected" routerLink="/completed" [class.disabled]="completed <= 0 ? true: null">{{ "app.footer.link.completed"|translate }}</a>
     </li>
   </ul>
-  <button [hidden]="completed <= 0" class="clear-completed" (click)="deleteCompleted()">Delete completed</button>
+  <button [hidden]="completed <= 0" class="clear-completed" (click)="deleteCompleted()">
+    {{ "app.footer.delete_completed"|translate }}
+  </button>
 </footer>

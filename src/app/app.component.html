@@ -1,3 +1,21 @@
-<p-toast position="top-center"></p-toast>
+<p-toolbar>
+  <div class="ui-toolbar-group-right">
+    <p-selectButton [options]="langs" [(ngModel)]="selectedLang" (onChange)="setLanguage()">
+      <ng-template let-item>
+        <span class="ui-button-text ui-clickable">{{item.label|translate:( item.labelTranslateParams ? item.labelTranslateParams : {} )}}</span>
+      </ng-template>
+    </p-selectButton>
+  </div>
+</p-toolbar>
+<p-toast position="top-center">
+  <ng-template let-message pTemplate="message">
+    <span class="ui-toast-icon pi"
+          [ngClass]="{'pi-info-circle': message.severity == 'info', 'pi-exclamation-triangle': message.severity == 'warn', 'pi-times-circle': message.severity == 'error', 'pi-check' :message.severity == 'success'}"></span>
+    <div class="ui-toast-message-text-content">
+        <div class="ui-toast-summary">{{message.summary|translate:(message.summaryTranslateParams ? message.summaryTranslateParams : {})}}</div>
+        <div class="ui-toast-detail">{{message.detail|translate:(message.detailTranslateParams ? message.detailTranslateParams : {})}}</div>
+    </div>
+  </ng-template>
+</p-toast>
 <app-todo></app-todo>
 <app-footer></app-footer>

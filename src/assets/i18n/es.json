@@ -1,0 +1,84 @@
+{
+  "app": {
+    "add": {
+      "new_todo": {
+        "placeholder": "Capturar la tarea"
+      }
+    },
+    "footer": {
+      "delete_completed": "Eliminar completadas",
+      "items_left": {
+        "plural": "tareas restantes",
+        "singular": "tarea restante"
+      },
+      "link": {
+        "all": "Todo",
+        "completed": "Completadas",
+        "pending": "Pendientes"
+      }
+    },
+    "list": {
+      "mark_all_as": "Marcar todas cómo",
+      "todo": {
+        "operation": {
+          "create": {
+            "sumary": {
+              "error": "Error de creacion de la tarea",
+              "success": "Tarea creada"
+            }
+          },
+          "delete": {
+            "sumary": {
+              "error": "Error de eliminación de la tarea",
+              "success": "Tarea eliminada"
+            }
+          },
+          "delete_completed": {
+            "detail": {
+              "error": "{count} { count, plural, one{error} other{errores}}",
+              "success": "Se {count, plural, one{elimino} other{eliminaron}} {count} { count, plural, one{tarea} other{tareas}}"
+            },
+            "sumary": {
+              "error": "Error al eliminar tareas completadas",
+              "success": "Se completo la eliminación de tareas completadas"
+            }
+          },
+          "switch_status": {
+            "completed": {
+              "sumary": {
+                "error": "Error al completar la tarea",
+                "success": "La tarea fue completada"
+              }
+            },
+            "pending": {
+              "sumary": {
+                "error": "Error al regresar la tarea a pendiente",
+                "success": "La tarea esta pendiente"
+              }
+            }
+          },
+          "update": {
+            "sumary": {
+              "error": "Error de actualización de tarea",
+              "success": "Tarea actualizada"
+            }
+          }
+        },
+        "status": {
+          "completed": "completadas",
+          "pending": "pendientes"
+        }
+      }
+    },
+    "title": "Tareas"
+  },
+  "footer": {
+    "created_by": "Creado por",
+    "instructions": "Double-click para editar el todo",
+    "part_of": "Parte de"
+  },
+  "locale": {
+    "english": "Ingles",
+    "spanish": "Español"
+  }
+}

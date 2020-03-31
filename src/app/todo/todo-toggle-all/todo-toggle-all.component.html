@@ -1,2 +1,2 @@
 <input id="toggle-all" class="toggle-all toggle" type="checkbox" [(ngModel)]="selected" (change)="markAllTodos($event)">
-<label for="toggle-all" >Mark all as {{ !selected ? 'completed' : 'pending' }}</label>
+<label for="toggle-all" >{{ 'app.list.mark_all_as'|translate }} {{ ('app.list.todo.status.'+(!selected ? 'completed' : 'pending'))|translate }}</label>

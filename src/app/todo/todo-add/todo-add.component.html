@@ -4,7 +4,7 @@
 <app-ui-div #new_todo_input >
   <input class="new-todo"
          type="text"
-         placeholder="Enter the task" 
+         placeholder="{{ 'app.add.new_todo.placeholder'|translate}}" 
          autofocus
          [(ngModel)]="title"
          (keyup.enter)="addTodo()">
